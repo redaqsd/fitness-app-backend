@@ -1,9 +1,9 @@
 const express = require("express")
 const app = express()
 require("dotenv").config()
-const connectDB = require("./db/connect")
 const notFound = require("./middleware/not-found")
 const cors = require("cors")
+const mongoose = require("mongoose")
 
 app.use(cors())
 app.use(express.json())
@@ -19,6 +19,15 @@ app.get("/api/v1/exercices" , (req,res) => {
         console.log(error)
     }
 })
+
+const connectDB = async (url) => {
+    try {
+        await mongoose.connect(url)
+        console.log("connected")
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+    }
+}
 
 const start = async() => {
     try{
