@@ -2,21 +2,23 @@ const express = require("express")
 const app = express()
 require("dotenv").config()
 const connectDB = require("./db/connect")
-const router = require("./routes/route")
 const notFound = require("./middleware/not-found")
 const cors = require("cors")
 
 app.use(cors())
 app.use(express.json())
-app.use("/api/v1/exercices" , router)
 app.use(notFound)
 
 const PORT = process.env.PORT || 3000
 
-app.get("/" , (req,res) => {
-    res.status(200).send("Fitness App")
+app.get("/api/v1/exercices" , (req,res) => {
+    try {
+        const exercises = await Exercice.find({})
+        res.status(200).json({exercises})
+    } catch (error) {
+        console.log(error)
+    }
 })
-
 
 const start = async() => {
     try{
